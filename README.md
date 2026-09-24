@@ -1,21 +1,29 @@
 # layoff.tools
 
-some sites track layoffs
+https://layoff.tools
 
-this one solves them
+## local dev
 
-according to [layoffs.fyi](https://layoffs.fyi/2026-layoffs/), about **251,000 tech workers** were laid off between January 2025 and September 10, 2026
+serve the folder then open http://localhost:8000
 
-| Period | Employees laid off | Companies |
-|---|---|---|
-| 2025 (full year) | 122,606 | — |
-| 2026 (through Sep 10) | 128,536 | 299 |
-| **Total** | **~251,142** | |
+with node, the page reloads when u save
 
-a quarter million tech job layoffs in 2 years only means theres plenty of new talent available to solve problems
+```
+npx browser-sync start --server --files "**/*.html,**/*.css,**/*.js,**/*.json" --ignore "tmp/**" --port 8000 --listen localhost --no-open --no-notify --no-ui
+```
 
-this is a community maintained site that supplies problem solvers the tools to earn a living
+without node, refresh by hand
 
-theres no reason to be out of work when theres so much to improve around us
+```
+python3 -m http.server 8000
+```
 
-or we're not living in a free market that rewards lowering prices
+opening index.html as a file breaks the js, browsers only load modules from a server
+
+## license
+
+[AGPL-3.0](LICENSE), copyright (c) 2026 layoff.tools contributors
+
+the layoff.tools name and domain arent covered by the license, forks must use a different name
+
+`vendor/lit-html` keeps its own BSD-3-Clause license

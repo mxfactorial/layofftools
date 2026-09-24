@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "layoff.tools tools list",
+  "type": "object",
+  "required": ["tools"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "shown as the card title, usually the domain"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://",
+            "description": "where the tool lives"
+          },
+          "description": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "description": "one short line per entry, lowercase, no trailing period, links as [text](https://...)"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^https://",
+            "description": "optional link to the public source"
+          }
+        }
+      }
+    }
+  }
+}

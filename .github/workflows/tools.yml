@@ -1,0 +1,37 @@
+name: tools
+
+on:
+  pull_request:
+    paths:
+      - data/**
+      - js/tools.js
+      - .github/workflows/tools.yml
+  push:
+    branches: [main]
+    paths:
+      - data/**
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: schema
+        run: npx -y ajv-cli@5 validate --spec=draft2020 -s data/tools.schema.json -d data/tools.json
+
+      - name: no duplicate names or urls
+        run: |
+          node -e '
+            const { tools } = require("./data/tools.json")
+            let failed = false
+            for (const key of ["name", "url"]) {
+              const seen = new Set()
+              for (const t of tools) {
+                const v = t[key].toLowerCase().replace(/\/+$/, "")
+                if (seen.has(v)) { console.error(`duplicate ${key}: ${t[key]}`); failed = true }
+                seen.add(v)
+              }
+            }
+            process.exit(failed ? 1 : 0)
+          '
