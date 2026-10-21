@@ -124,6 +124,14 @@ be honest about weak spots that remain, the maintainer reviews the case, not jus
 - server has only #general and a General voice channel, add channels only when a topic outgrows #general
 - github discussions to scout problems, pick targets and split the work, new tools arrive as pull requests not pitches
 
+## search consoles (maintainer only)
+
+contributors ignore this section, nothing here needs a pull request
+
+- google: domain property `sc-domain:layoff.tools` at https://search.google.com/search-console?resource_id=sc-domain:layoff.tools, verified 2026-10-20 by the TXT record on `@` starting `google-site-verification=` in the dns, delete that record and the property loses verification
+- bing: site `https://layoff.tools/` at https://www.bing.com/webmasters/home?siteUrl=https://layoff.tools/, imported from the google property on 2026-10-20 with read only access to it, so it stays verified while google is
+- https://layoff.tools/sitemap.xml is submitted on both, add a url to the sitemap when a page is added and both reread it on their own
+
 ## git (maintainer only)
 
 contributors ignore this section and follow the workflow above
