@@ -3,8 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>layoff.tools</title>
+  <title>layoff.tools, some sites track layoffs, this one solves them</title>
   <meta name="description" content="some sites track layoffs, this one solves them">
+  <link rel="canonical" href="https://layoff.tools/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://layoff.tools/">
+  <meta property="og:title" content="layoff.tools">
+  <meta property="og:description" content="some sites track layoffs, this one solves them">
+  <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="/css/style.css">
   <script type="importmap">
     {
@@ -15,6 +22,7 @@
     }
   </script>
   <script type="module" src="/js/tools.js"></script>
+  <script type="module" src="/js/groups.js"></script>
 </head>
 <body>
   <main>
@@ -55,6 +63,14 @@
       <div id="tool-list"></div>
 
       <p>got a tool, point ur agent at <a href="https://github.com/mxfactorial/layofftools">the repo</a> and open a pr</p>
+    </section>
+
+    <section id="action">
+      <h2>action</h2>
+
+      <h3>meetups</h3>
+
+      <div id="group-list"></div>
     </section>
 
     <section id="comms">

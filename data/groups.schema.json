@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "layoff.tools groups list",
+  "type": "object",
+  "required": ["groups"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url", "tool", "city", "country", "lat", "lng"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "the group name, shown as the link text, a name that ends with the city nests the city under the rest of the name on the page"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://",
+            "description": "the group page, not an event page"
+          },
+          "tool": {
+            "type": "string",
+            "pattern": "^[a-z0-9.-]+\\.[a-z]+$",
+            "description": "where the group organizes, a lowercase hostname, eg meetup.com"
+          },
+          "city": {
+            "type": "string",
+            "description": "city as the group names it"
+          },
+          "region": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}-[A-Z0-9]{1,3}$",
+            "description": "optional ISO 3166-2 code, eg US-CA, stored for filtering, not shown"
+          },
+          "country": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$",
+            "description": "ISO 3166-1 alpha-2 code, eg US, stored for filtering, not shown"
+          },
+          "lat": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90,
+            "description": "venue latitude, or the city center when the venue moves"
+          },
+          "lng": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180,
+            "description": "venue longitude, or the city center when the venue moves"
+          }
+        }
+      }
+    }
+  }
+}

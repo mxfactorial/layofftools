@@ -109,3 +109,12 @@ h3 {
 .tool p:last-child {
   margin-bottom: 0;
 }
+
+ul {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+
+ul ul {
+  margin-bottom: 0;
+}
