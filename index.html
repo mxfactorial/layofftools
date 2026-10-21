@@ -13,16 +13,6 @@
   <meta property="og:description" content="some sites track layoffs, this one solves them">
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="/css/style.css">
-  <script type="importmap">
-    {
-      "imports": {
-        "lit-html": "/vendor/lit-html/lit-html.js",
-        "lit-html/": "/vendor/lit-html/"
-      }
-    }
-  </script>
-  <script type="module" src="/js/tools.js"></script>
-  <script type="module" src="/js/groups.js"></script>
 </head>
 <body>
   <main>
@@ -60,7 +50,12 @@
     <section id="tools">
       <h2>tools</h2>
 
-      <div id="tool-list"></div>
+      <article class="tool">
+        <h3><a href="https://gradienterp.cloud/">gradienterp.cloud</a></h3>
+        <p>an agent administered ERP application to lower the cost of entrepreneurship and running a business</p>
+        <p>users receive the option to publish their accounting and operational data on <a href="https://openlyoperated.biz/">openlyoperated.biz</a> to attract capital from investors and r&amp;d from engineers</p>
+        <p><a href="https://github.com/systemaccounting/gradienterp">github.com/systemaccounting/gradienterp</a></p>
+      </article>
 
       <p>got a tool, point ur agent at <a href="https://github.com/mxfactorial/layofftools">the repo</a> and open a pr</p>
     </section>
@@ -70,7 +65,15 @@
 
       <h3>meetups</h3>
 
-      <div id="group-list"></div>
+      <ul>
+        <li>Laid off in
+          <ul>
+            <li data-tool="meetup.com" data-city="Los Angeles" data-region="US-CA" data-country="US" data-lat="33.970767" data-lng="-118.419232">
+              <a href="https://www.meetup.com/laid-off-in-los-angeles/">Los Angeles</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </section>
 
     <section id="comms">

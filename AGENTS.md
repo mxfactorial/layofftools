@@ -12,35 +12,29 @@ ai is a weapon against unemployment, one person with an agent can now build what
 
 - `index.html` all site content
 - `css/style.css` styles
-- `js/` page scripts, `js/tools.js` renders the tools list, `js/groups.js` renders the groups list
-- `data/tools.json` the tools list, `data/tools.schema.json` its fields
-- `data/groups.json` the groups list, `data/groups.schema.json` its fields
-- `vendor/lit-html/` third party, dont edit
 - `favicon.svg`, `robots.txt` and `sitemap.xml` are hand written, add a url to the sitemap when a page is added
-- `.github/workflows/` ci, free on this public repo, add a workflow when something needs test coverage
+- `.github/workflows/` ci, free on this public repo, none yet, add a workflow when something needs test coverage
 - `tmp/` gitignored scratch space
 
 ## site
 
 - served by github pages at https://layoff.tools from the root of `main`
-- plain html, css and js, no build step
+- plain html and css, no js, no build step, agents handle the html toil
 - `index.html` is the homepage and holds all site content, README.md only links https://layoff.tools and covers local dev, dont copy site content into it. README.md is excluded from the site in `_config.yml`
-- keep core text in plain html so search engines and link previews see it, use lit-html for interactive tools
-- lit-html 3.3.3 is vendored in `vendor/lit-html/` and mapped in the page import map, import it as `lit-html` or `lit-html/directives/...`
-- to upgrade lit-html, copy the new package's production `.js` files, `directives/`, `LICENSE` and `package.json` over `vendor/lit-html/`
-- local dev from the repo root, then open http://localhost:8000 (modules and the import map dont load over `file://`)
-  - with auto reload: `npx browser-sync start --server --files "**/*.html,**/*.css,**/*.js,**/*.json" --ignore "tmp/**" --port 8000 --listen localhost --no-open --no-notify --no-ui`
+- everything is in the html so search engines, link previews and ai scrapers see all of it, add js only when a tool needs interaction, eg filtering groups by place, and read what it needs from data attributes
+- local dev is opening `index.html` in a browser, or serve the repo root for auto reload and open http://localhost:8000
+  - `npx browser-sync start --server --files "**/*.html,**/*.css" --ignore "tmp/**" --port 8000 --listen localhost --no-open --no-notify --no-ui`
   - `--files` is split on commas, so dont use brace globs like `*.{html,css}`
-  - without node: `python3 -m http.server 8000`
 
 ## adding a tool
 
-- append one entry to the `tools` array in `data/tools.json`, a listing needs no html change, `js/tools.js` renders every entry as a card with lit-html
-- fields are defined in `data/tools.schema.json`: `name`, `url` and `description` are required, `code` is an optional link to public source
-- `url` and `code` must start with https://
-- `description` is a list of short lines, one paragraph each, written in the site style below, links inline as `[text](https://...)`
+- copy the `<article class="tool">` block in the tools section of `index.html` and fill it in, one card per tool
+- the `<h3>` holds the tool name, usually its domain, linked to the tool
+- then one `<p>` per short line of description, written in the site style below, links inline
+- an optional last `<p>` links the public source, shown as the url without https://
+- every link starts with https://
 - one tool per pull request
-- listing a tool doesnt change the tools own license, closed source and paid tools are welcome, only the entry text in `data/tools.json` is AGPL-3.0
+- listing a tool doesnt change the tools own license, closed source and paid tools are welcome, only the card text in `index.html` is AGPL-3.0
 
 ## adding a group
 
@@ -48,17 +42,15 @@ the action section on the page lists ways to mobilize in person, a group is a co
 
 the page links to the group and stops there, schedules, rsvps and reminders live on the tool the group organizes with, so nothing on the page expires and the list stays low churn
 
-- append one entry to the `groups` array in `data/groups.json`, no html change, `js/groups.js` renders each entry as a link
-- a name that ends with its city nests the city under the words before it on the page, so Laid off in Los Angeles shows as Laid off in with Los Angeles under it, and Laid off in San Diego would join it there
-- fields are defined in `data/groups.schema.json`
-  - `name` is the group name, shown as the link text
-  - `url` is the group page, not an event page, events come and go and the group link stays
-  - `tool` is where the group organizes as a lowercase hostname, eg `meetup.com`, `lu.ma`, `discord.gg`
-  - `city` as the group names it
-  - `region` is optional, an ISO 3166-2 code like `US-CA`
-  - `country` is an ISO 3166-1 alpha-2 code like `US`
-  - `lat` and `lng` are the venue coordinates, or the city center when the venue moves
-- every entry carries coordinates and codes so the list can be filtered by place or distance later without backfilling
+- add one `<li>` to the list in the action section of `index.html`, a city under its series heading, eg Los Angeles under Laid off in, or a standalone group as its own `<li>` with the group name as the link text
+- the link is the group page, not an event page, events come and go and the group link stays
+- data attributes on the `<li>` are stored for filtering later and not shown
+  - `data-tool` is where the group organizes as a lowercase hostname, eg `meetup.com`, `lu.ma`, `discord.gg`
+  - `data-city` as the group names it
+  - `data-region` is optional, an ISO 3166-2 code like `US-CA`
+  - `data-country` is an ISO 3166-1 alpha-2 code like `US`
+  - `data-lat` and `data-lng` are the venue coordinates, or the city center when the venue moves
+- every entry carries coordinates and codes so a filter by place or distance can read them off the page later without backfilling
 - a meetup.com event page embeds the venue coordinates, fetch the page and search its source for `"lat":` and `"lng":`
 - one group per pull request
 - the economics questions below are for tools, for a group just say ur connection to it, eg organizer or member, and where people meet
@@ -72,7 +64,7 @@ guidance for contributors and their agents, not a rulebook, use judgment
 
 1. fork https://github.com/mxfactorial/layofftools and clone the fork
 2. branch off `main`
-3. make the change, for a new tool thats one entry in `data/tools.json`
+3. make the change, for a new tool thats one card in `index.html`
 4. check it, see below
 5. commit, push to ur fork and open a pull request against `main`, eg `gh pr create --repo mxfactorial/layofftools`
 
@@ -122,10 +114,8 @@ be honest about weak spots that remain, the maintainer reviews the case, not jus
 
 ### check
 
-- validate the tools list: `npx -y ajv-cli@5 validate --spec=draft2020 -s data/tools.schema.json -d data/tools.json` should print `data/tools.json valid`
-- validate the groups list: `npx -y ajv-cli@5 validate --spec=draft2020 -s data/groups.schema.json -d data/groups.json` should print `data/groups.json valid`
-- the `data` workflow in `.github/workflows/data.yml` runs both schema checks and a duplicate name or url check on every pull request that touches `data/`
-- run the local server below, open http://localhost:8000, confirm ur entry renders and the browser console has no errors
+- open `index.html` or run the local server, confirm ur card or city renders and nothing else moved
+- search `index.html` for the url before adding it so nothing is listed twice
 - copy follows the writing style at the bottom of this file
 
 ## community
@@ -142,7 +132,7 @@ contributors ignore this section and follow the workflow above
 
 ## writing style
 
-applies to README, all site copy and tool descriptions in `data/tools.json`
+applies to README and all site copy, tool cards included
 
 - all lowercase, except proper nouns and names in links
 - one line paragraphs with simple words
